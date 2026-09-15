@@ -96,8 +96,7 @@ void printArr(int *arr, int n)
     {
         cout << arr[i] << " ";
     }
-    cout << '\n'
-         << endl;
+    cout << '\n' << endl;
 }
 
 int main()
