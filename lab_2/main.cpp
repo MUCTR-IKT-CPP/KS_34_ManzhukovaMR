@@ -70,26 +70,19 @@ double findMin(double** arr, int n)
 /*
  * Функция: normalizeArr
  * Назначение: нормализует значения температур к диапазону [0; 1]
- *             по формуле (x - min) / (max - min), где min и max —
- *             минимальное и максимальное значения массива.
  * @param arr - указатель на массив
  * @param n   - размерность квадратного массива
  * @return    - ничего не возвращает (void)
- * @note      - если все элементы равны (max == min), деления на 0 не произойдёт,
- *              функция просто выйдет без изменений.
  */
 void normalizeArr(double** arr, int n)
 {
-    double minV = findMin(arr, n);
-    double maxV = findMax(arr, n);
-
-    if (maxV == minV) return;
+    double low = -30.00, up = 40.00;
 
     for (int i = 0; i < n; i++)
     {
         for (int j = 0; j < n; j++)
         {
-            arr[i][j] = (arr[i][j] - minV)/(maxV - minV);
+            arr[i][j] = (arr[i][j] - low)/(up - low);
         }
     }
 }
@@ -132,7 +125,9 @@ void printArr(double** arr, int n)
 int main()
 {
     int num;
+    cout << "N = ";
     cin >> num;
+
     if (num <= 0) {
         cout << "N must be positive" << endl;
         return 1;
@@ -140,35 +135,47 @@ int main()
 
     double **arr = new double*[num];
     for (int i = 0; i < num; i++)
-       arr[i] = new double[num];
+        arr[i] = new double[num];
 
     srand(time(nullptr));
     generateArr(arr, num);
     printArr(arr, num);
-    
-    cout << "Print the number of your choose: \n" << "1. normalize array of tempeeratures\n" 
-    << "2. find the hottest point\n" << "3. find the coldest point\n" 
-    << "4. send the link of the massive in function" << endl;
+
     int user_choice;
-    cin >> user_choice;
-    switch (user_choice) {
-    case 1:
-        normalizeArr(arr, num);
-        printArr(arr, num);
-        break;
-    case 2:
-        cout << "Hottest: " << findMax(arr, num) << endl;
-        break;
-    case 3:
-        cout << "Coldest: " << findMin(arr, num) << endl;
-        break;
-    case 4:
-        passByRef(arr, num);
-        break;
-    default:
-        cout << "Wrong choice" << endl;
-        break;
-}
+
+    do {
+        cout << "\n===== MENU =====\n"
+             << "1. Normalize array of temperatures\n"
+             << "2. Find the hottest point\n"
+             << "3. Find the coldest point\n"
+             << "4. Send the link of the massive in function\n"
+             << "0. Exit\n"
+             << "Your choice: ";
+        cin >> user_choice;
+
+        switch (user_choice) {
+        case 1:
+            normalizeArr(arr, num);
+            cout << "Array after normalization:\n";
+            printArr(arr, num);
+            break;
+        case 2:
+            cout << "Hottest: " << findMax(arr, num) << endl;
+            break;
+        case 3:
+            cout << "Coldest: " << findMin(arr, num) << endl;
+            break;
+        case 4:
+            passByRef(arr, num);
+            break;
+        case 0:
+            cout << "Exit!" << endl;
+            break;
+        default:
+            cout << "Wrong choice" << endl;
+            break;
+        }
+    } while (user_choice != 0);
 
     for (int i = 0; i < num; i++)
         delete[] arr[i];
